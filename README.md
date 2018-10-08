@@ -16,7 +16,7 @@ GET /api/v1/users/requests/`<requestId>` | Fetch a request that belongs to a log
 POST /api/v1/users/requests/ | Create a request
 PUT /api/v1/users/requests/`<requestId>`/ | Modify a request.
 
-##  Stack
+##  Prerequisites
 - Python
 - Flask 
 
