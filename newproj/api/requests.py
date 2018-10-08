@@ -60,15 +60,14 @@ def create_request():
 
 @app.route('/api/v1/users/requests', methods=['GET'])
 def get_all_requests():
-    return jsonify({'requests': requests}), 200
+    if len(requests) >= 1:
+        return jsonify({'requests': requests}), 200
+    else:  
+        return jsonify({
+            "Status": "Failure",
+            "Message": "Currently there are no requests"}), 404
 
 
-#@app.route('/api/v1/users/requests/<int:request_id>', methods=['GET'])
-#def get_request(request_id):
-#    for each_request in requests:
-#        if each_request.get('request_id') == request_id:
-#            return jsonify({'request': each_request})
-#    return jsonify({'error': 'Request Not Found'}), 404
 @app.route('/api/v1/users/requests/<int:request_id>', methods=['GET'])
 def get_a_request(request_id):
     """ Endpoint to fetch a request """
@@ -76,13 +75,12 @@ def get_a_request(request_id):
         return jsonify({"status":"Failure",
         "Oops!":"There are no requests"
         }),404
-    for user_request in requests:
-        if user_request.request_id ==request_id:
-            return jsonify({'Request': user_request.__dict__}),200
+    for each_user_request in requests:
+        if each_user_request.get('id') ==request_id:
+            return jsonify({'Request': each_user_request}),200
     
-    return jsonify({'error':'User Not Found'}), 404
-
-
+ 
+    
 @app.route("/api/v1/users/requests/<int:request_id>", methods=['PUT'])
 def update_request(request_id):
     """ Endpoint to modify a given request"""
@@ -102,22 +100,23 @@ def update_request(request_id):
         workassignedto = request_data.get("workassignedto")
         workbilledto = request_data.get("workbilledto")
         detailsofrequest = request_data.get("detailsofrequest")
-
+        
+        
         for user_request in requests:
-            if user_request.request_id == int(request_id):
-                user_request.clientname = clientname
-                user_request.clientcontact = clientcontact
-                user_request.clientemail = clientemail
-                user_request.locationaddress= locationaddress
-                user_request.department = department
-                user_request.dateneeded = dateneeded
-                user_request.workassignedto = workassignedto
-                user_request.workbilledto = workbilledto
-                user_request.detailsofrequest = detailsofrequest
+            if user_request['id'] == request_id:
+                user_request['clientname'] = clientname
+                user_request['clientcontact'] = clientcontact
+                user_request['clientemai'] = clientemail
+                user_request['locationaddress']= locationaddress
+                user_request['department'] = department
+                user_request['dateneeded'] = dateneeded
+                user_request['workassignedto'] = workassignedto
+                user_request['workbilledto'] = workbilledto
+                user_request['detailsofrequest'] = detailsofrequest
 
-            return jsonify({
-                "request":user_request.__dict__,
-                "status":"OK",
-                "Great":"user request has been successfully updated",
+                return jsonify({
+                    "request" :user_request,
+                    "status":"OK",
+                    "Great":"user request has been successfully updated",
             })
 

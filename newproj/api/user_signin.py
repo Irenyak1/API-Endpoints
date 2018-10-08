@@ -1,9 +1,10 @@
 from flask import Flask, jsonify, request
 from api import app
 from api import dummy_data
+from .models import Request, requests, User, users
 
 
-@app.route('/UI/signin_user', methods=['GET'])
+@app.route('/signin_user', methods=['GET'])
 def signin():
     return 'signin_user.html'
 
@@ -27,3 +28,15 @@ def signin_user():
     
     return jsonify({ 'message': f'Hi {username} you are successfully logged in'}), 201
 
+@app.route('/users')
+def get_all_users():
+    return jsonify({'users': users}), 200
+
+
+@app.route('/users/<int:user_id>')
+def get_user(user_id):
+    for each_user in users:
+        if each_user.get('id') == user_id:
+            return jsonify({'user': each_user})
+
+    return jsonify({'error': 'User Not Found'}), 404

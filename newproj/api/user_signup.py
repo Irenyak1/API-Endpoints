@@ -3,7 +3,7 @@ from api import app
 from .models import Request, requests, User, users
 
 
-@app.route('/UI/signup', methods=['GET'])
+@app.route('/signup', methods=['GET'])
 def sign_up():
     return 'signup.html'
 
@@ -36,7 +36,7 @@ def signup_user():
 
     if not confirmation:
         return jsonify({'message': 'confirmation for password is required'}), 400
-
+    
     user_data['id'] = len(users)
     # store your data to your database
     users.append(user_data)
